@@ -1,0 +1,29 @@
+<tal:translation i18n:domain="common">
+<div>
+  <input type="radio"
+	 tal:attributes="name string:${options/modified_name}:int"
+	 value="0" checked="checked" />
+  <span i18n:translate="keep_file">Keep existing file</span>
+</div>
+
+<div>
+  <input type="radio"
+	 tal:attributes="name string:${options/modified_name}:int"
+	 value="2" />
+  <span i18n:translate="delete_file">Delete the existing file</span>
+</div>
+
+<div>
+  <input type="radio"
+	 tal:attributes="name string:${options/modified_name}:int"
+	 value="1" />
+  <span i18n:translate="upload_new_file">Replace with new file:</span>
+</div>
+
+<div tal:attributes="class string:_file_${options/name}">
+  <input
+      type="file"
+      tal:attributes="name string:${options/name}"
+      />
+</div>
+</tal:translation>

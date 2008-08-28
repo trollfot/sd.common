@@ -1,0 +1,25 @@
+<tal:translation i18n:domain="common">
+<em class="discreet"
+    i18n:translate="no_file">No file uploaded yet.</em>
+
+<div>
+  <input type="radio"
+	 tal:attributes="name string:${options/modified_name}:int"
+	 value="0"/>
+  <span i18n:translate="leave_empty">Keep this field empty</span>
+</div>
+
+<div>
+  <input type="radio"
+	 tal:attributes="name string:${options/modified_name}:int"
+	 value="1" checked="checked" />
+  <span i18n:translate="upload_image">Upload a new file:</span>
+</div>
+
+<div tal:attributes="class string:_file_${options/name}">
+  <input
+      type="file"
+      tal:attributes="name string:${options/name}"
+      />
+</div>
+</tal:translation>

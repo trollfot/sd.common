@@ -1,0 +1,35 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: sd.common\n"
+"POT-Creation-Date: 2008-04-22 16:08+0100\n"
+"PO-Revision-Date: 2008-04-22 16:08+0100\n"
+"Last-Translator: Souheil CHELFOUH <souheil@chelfouh.com>\n"
+"Language-Team: Souheil CHELFOUH <souheil@chelfouh.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language-Code: fr\n"
+"Language-Name: Français\n"
+"Preferred-Encodings: utf-8\n"
+"Domain: common\n"
+"X-Is-Fallback-For: fr-be fr-ca fr-lu fr-mc fr-ch fr-fr\n"
+
+
+msgid "leave_empty"
+msgstr "Laisser ce champ vide"
+
+msgid "upload_image"
+msgstr "Uploader un nouveau fichier"
+
+msgid "no_file"
+msgstr "Aucun fichier uploadé"
+
+msgid "keep_file"
+msgstr "Garder la version existante du fichier"
+
+msgid "delete_file"
+msgstr "Supprimer ce fichier"
+
+msgid "upload_new_file"
+msgstr "Remplacer par le nouveau fichier"
