@@ -23,6 +23,7 @@ setup(name = name,
       platforms = 'Any',
       zip_safe = False,
       install_requires=[
+          'setuptools',
       ],
       classifiers = [
         'Development Status :: 4 - Beta',
