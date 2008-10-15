@@ -16,7 +16,6 @@ from base import BaseAdapter
 from interfaces import IContentQueryHandler
 
 
-
 class FolderishContentQuery(BaseAdapter):
     adapts(IContainer)
     implements(IContentQueryHandler)
@@ -31,13 +30,16 @@ class FolderishContentQuery(BaseAdapter):
         return gsm.checkPermission('Access inactive portal content',
                                    aq_inner(self.context))
 
-    def query_contents(self, show_inactive=False, contentFilter={}):
+    def query_contents(self, show_inactive=False, **contentFilter):
         """Returns a list of the brains contained in the context.
         """
         if contentFilter.get('path', None) is None:
             contentFilter['path'] = dict(
                 query = '/'.join(self.context.getPhysicalPath()),
                 depth = 1)
+
+        if contentFilter.get('sort_on', None) is None:
+            contentFilter['sort_on'] = "getObjPositionInParent"
         
         show_inactive = show_inactive and self.can_query_inactive
         return self.catalog(contentFilter, show_inactive = show_inactive)
@@ -67,7 +69,7 @@ class TopicContentQuery(FolderishContentQuery):
                 contentFilter[k]=v
         return contentFilter
 
-    def query_contents(self, show_inactive=False, contentFilter={}):
+    def query_contents(self, show_inactive=False, **contentFilter):
         """Returns a list of the brains contained in the context.
         """
         query = self.merge_filters(self.query, contentFilter)
