@@ -54,6 +54,8 @@ class TopicContentQuery(FolderishContentQuery):
         return self.context.buildQuery()
 
     def merge_filters(self, query, contentFilter):
+        if not query:
+            return contentFilter
         for k,v in query.items():
             if contentFilter.has_key(k):
                 arg = contentFilter.get(k)
