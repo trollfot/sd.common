@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from five import grok
 from zope.component import adapts
 from zope.interface import implements
 from zope.annotation.interfaces import IAttributeAnnotatable
@@ -8,12 +9,13 @@ from sd.common.adapters.base import BaseAdapter
 from interfaces import IDictStorage, IListStorage
 
 
-class SimpleAnnotationStorage(BaseAdapter):
+class SimpleAnnotationStorage(grok.Adapter):
     """A simple storage system using annotations. It will store the items
     in a list. The key is the index in this list.
     """
-    adapts(IAttributeAnnotatable)
-    implements(IListStorage)
+    grok.context(IAttributeAnnotatable)
+    grok.provides(IListStorage)
+    grok.baseclass()
 
     storage = AdapterAnnotationProperty(
         IListStorage['storage'],
@@ -51,13 +53,14 @@ class SimpleAnnotationStorage(BaseAdapter):
         return self.retrieve(idx)
 
 
-class GenericAnnotationStorage(BaseAdapter):
+class GenericAnnotationStorage(grok.Adapter):
     """A very generic storage system using annotations.
     It will store the items in a dictionnary.
     The key is unique and can be of any hashable type.
     """
-    adapts(IAttributeAnnotatable)
-    implements(IDictStorage)
+    grok.context(IAttributeAnnotatable)
+    grok.provides(IDictStorage)
+    grok.baseclass()
 
     storage = AdapterAnnotationProperty(
         IDictStorage['storage'],

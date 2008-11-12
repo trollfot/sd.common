@@ -20,6 +20,16 @@ class FolderishContentQuery(BaseAdapter):
     adapts(IContainer)
     implements(IContentQueryHandler)
 
+    def buildQuery(self, contentFilter):
+        if contentFilter.get('path', None) is None:
+            contentFilter['path'] = dict(
+                query = '/'.join(self.context.getPhysicalPath()),
+                depth = 1)
+
+        if contentFilter.get('sort_on', None) is None:
+            contentFilter['sort_on'] = "getObjPositionInParent"
+        return contentFilter
+
     @CachedProperty
     def catalog(self):
         return getToolByName(self.context, 'portal_catalog')
@@ -30,32 +40,26 @@ class FolderishContentQuery(BaseAdapter):
         return gsm.checkPermission('Access inactive portal content',
                                    aq_inner(self.context))
 
-    def query_contents(self, show_inactive=False, **contentFilter):
+    def query_contents(self, show_inactive=False, limit=None, **contentFilter):
         """Returns a list of the brains contained in the context.
         """
-        if contentFilter.get('path', None) is None:
-            contentFilter['path'] = dict(
-                query = '/'.join(self.context.getPhysicalPath()),
-                depth = 1)
-
-        if contentFilter.get('sort_on', None) is None:
-            contentFilter['sort_on'] = "getObjPositionInParent"
-        
         show_inactive = show_inactive and self.can_query_inactive
-        return self.catalog(contentFilter, show_inactive = show_inactive)
+        query = self.buildQuery(contentFilter)        
 
+        if limit and query.get('sort_limit', None) is None:
+            query['sort_limit'] = limit
+            return self.catalog(show_inactive = show_inactive, **query)[:limit]
+
+        
+        return self.catalog(show_inactive = show_inactive, **query)
+        
 
 class TopicContentQuery(FolderishContentQuery):
     adapts(IATTopic)
     implements(IContentQueryHandler)
 
-    @CachedProperty
-    def query(self):
-        return self.context.buildQuery()
-
-    def merge_filters(self, query, contentFilter):
-        if not query:
-            return contentFilter
+    def buildQuery(self, contentFilter):
+        query = self.context.buildQuery()
         for k,v in query.items():
             if contentFilter.has_key(k):
                 arg = contentFilter.get(k)
@@ -70,12 +74,3 @@ class TopicContentQuery(FolderishContentQuery):
             else:
                 contentFilter[k]=v
         return contentFilter
-
-    def query_contents(self, show_inactive=False, **contentFilter):
-        """Returns a list of the brains contained in the context.
-        """
-        query = self.merge_filters(self.query, contentFilter)
-        return self.catalog(**query)
-        
-        
-
