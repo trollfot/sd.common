@@ -4,6 +4,8 @@ from zope.interface import Interface, Attribute
 from zope.schema import Dict, Object, List, TextLine
 from BTrees.OOBTree import OOBTree
 
+__all__ = ["IStorageItem", "IStorage", "IListStorage", "IDictStorage"]
+
 
 class IStorageItem(Interface):
     """An item that can be stored.

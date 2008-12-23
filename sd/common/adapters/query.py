@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from five import grok
 from zope.interface import implements
 from zope.component import adapts
 from zope.app.container.interfaces import IContainer
@@ -11,13 +12,11 @@ from AccessControl import getSecurityManager
 from plone.memoize.instance import memoize
 from Products.CMFCore.utils import getToolByName
 from Products.ATContentTypes.interface.topic import IATTopic
-
-from base import BaseAdapter
 from interfaces import IContentQueryHandler
 
 
-class FolderishContentQuery(BaseAdapter):
-    adapts(IContainer)
+class FolderishContentQuery(grok.Adapter):
+    grok.context(IContainer)
     implements(IContentQueryHandler)
 
     def buildQuery(self, contentFilter):
@@ -46,20 +45,24 @@ class FolderishContentQuery(BaseAdapter):
         show_inactive = show_inactive and self.can_query_inactive
         query = self.buildQuery(contentFilter)        
 
+        if query is None:
+            return []
+
         if limit and query.get('sort_limit', None) is None:
             query['sort_limit'] = limit
             return self.catalog(show_inactive = show_inactive, **query)[:limit]
 
-        
         return self.catalog(show_inactive = show_inactive, **query)
         
 
 class TopicContentQuery(FolderishContentQuery):
-    adapts(IATTopic)
+    grok.context(IATTopic)
     implements(IContentQueryHandler)
 
     def buildQuery(self, contentFilter):
         query = self.context.buildQuery()
+        if not query:
+            return None
         for k,v in query.items():
             if contentFilter.has_key(k):
                 arg = contentFilter.get(k)
