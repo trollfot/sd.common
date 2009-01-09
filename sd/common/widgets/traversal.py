@@ -20,9 +20,9 @@ class DownloadTraverser(object):
     def traverse(self, name, ignore):            
         file = getattr(self.context, name, None)
         if file is not None:
-            content_type = file.get('content_type', 'application/octet-stream')
-            self.response.setHeader('Content-Type', content_type)
-            self.response.setHeader('Content-Disposition',
-                                    'attachment; filename="%s"' % file.filename)
+            self.response.setHeader(
+                'Content-Disposition',
+                'attachment; filename=%s' % file.filename
+                )
             return file.__of__(self.context)
         raise NotFound(self.context, name, self.request)
