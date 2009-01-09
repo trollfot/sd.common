@@ -8,10 +8,40 @@ from zope.app.form import interfaces as forminterfaces
 from zope.cachedescriptors.property import Lazy
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
+
 _marker = object()
 
 
-class FileUploadWidget(widget.SimpleInputWidget):
+class FileWidgetMixin(object):
+    
+    @property
+    def url(self):
+        return '%s/++download++%s' % (
+            self.request.get("URL1"),
+            self.context.__name__
+            )
+
+    @Lazy
+    def filename(self):
+        filename = getattr(self._data, 'filename', None)
+        if filename is None:
+            filename = getattr(self._data, '__name__', '')
+        return filename
+
+
+    def __call__(self):
+        return widget.renderElement(
+            u'a',
+            href=self.url,
+            contents=self.filename)
+
+
+class FileDownloadWidget(FileWidgetMixin, browser.DisplayWidget):
+    """Widget capable of downloading file.
+    """
+
+
+class FileUploadWidget(FileWidgetMixin, widget.SimpleInputWidget):
 
     existWidget = ViewPageTemplateFile('templates/exist.pt')
     emptyWidget = ViewPageTemplateFile('templates/empty.pt')
@@ -25,9 +55,9 @@ class FileUploadWidget(widget.SimpleInputWidget):
             )
 
         if type(self._data) is not type(_marker):
-            kwargs['filename'] = self.filename
-            return self.existWidget(**kwargs)
-            
+            download = FileWidgetMixin.__call__(self)
+            return download + self.existWidget(**kwargs)
+
         return self.emptyWidget(**kwargs)
 
            
@@ -43,10 +73,3 @@ class FileUploadWidget(widget.SimpleInputWidget):
     @Lazy
     def _modified_name(self):
         return "_modify_%s" % self.name
-
-    @Lazy
-    def filename(self):
-        filename = getattr(self._data, 'filename', None)
-        if filename is None:
-            filename = getattr(self._data, '__name__', '')
-        return filename

@@ -1,0 +1,23 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <!-- Binding fields and widgets -->
+  <view type="zope.publisher.interfaces.browser.IBrowserRequest"
+        for="sd.common.fields.file.FileField"
+        provides="zope.app.form.interfaces.IInputWidget"
+        factory=".file.FileUploadWidget"
+        permission="cmf.ModifyPortalContent"
+        />
+
+  <view type="zope.publisher.interfaces.browser.IBrowserRequest"
+        for="sd.common.fields.file.FileField"
+        provides="zope.app.form.interfaces.IDisplayWidget"
+        factory=".file.FileDownloadWidget"
+        permission="zope2.View"
+        />
+
+  <adapter
+      name="download" 
+      factory=".traversal.DownloadTraverser"
+      />
+
+</configure>

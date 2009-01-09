@@ -53,7 +53,7 @@ class FileProperty(object):
             obj.filename = value.filename
         else:
             obj = None
-            
+
         fields[name] = obj
         inst._p_changed = True
 
