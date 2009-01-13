@@ -21,17 +21,25 @@ def hasImageAndCaption(object, portal, **kw):
             return None
         else:
             sub_path = adapted.sub_path
+            thumb_path = adapted.thumb_path
             image = adapted.getImage()
     else:
         sub_path = "image"
+        thumb_path = "image_"
         image = object.getImage()
     
     if image:
         caption = getattr(object, "getImageCaption", None)
-        return {'image': True,
-                'sub_path': sub_path,
-                'caption': caption and caption() or None}
-    else:
-        return {'image': False, 'caption': None, 'sub_path': None}
+        return {
+            'image': True,
+            'sub_path': sub_path,
+            'thumb_path': thumb_path,
+            'caption': caption and caption() or None
+            }
+
+    return {'image': False,
+            'caption': None,
+            'thumb_path': None,
+            'sub_path': None}
 
 

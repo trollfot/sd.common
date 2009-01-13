@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from zope.schema import TextLine
+from zope.interface import Attribute
 from Products.ATContentTypes.interface.image import IImageContent
+
 
 class IImageContentProvider(IImageContent):
     """Provides the image content interface and a simple method to reach
-    the image path.
+    the image and thumbnails.
     """
-    sub_path = TextLine(title=u'image traverse sub_path')
+    sub_path = Attribute("image traverse sub_path")
+    thumb_path = Attribute("thumbnails traverse sub_path."
+                           "Scale of the thumb is appened.")
+    
