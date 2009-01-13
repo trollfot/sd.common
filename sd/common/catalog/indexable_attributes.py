@@ -14,8 +14,7 @@ def hasImageAndCaption(object, portal, **kw):
     """
     object = aq_base(object)
 
-    if (not IImageContent.providedBy(object) and
-        not IPhotoAlbumAble.providedBy(object)):
+    if not IImageContent.providedBy(object):
         adapted = IImageContentProvider(object, None)
         if adapted is None:
             return None
