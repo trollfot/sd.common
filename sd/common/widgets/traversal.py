@@ -17,7 +17,7 @@ class DownloadTraverser(object):
         self.request = request
         self.response = request.response
         
-    def traverse(self, name, ignore):            
+    def traverse(self, name, ignore):
         file = getattr(self.context, name, None)
         if file is not None:
             self.response.setHeader(
