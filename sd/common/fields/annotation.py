@@ -16,7 +16,7 @@ class AdapterAnnotationProperty(object):
     def _get_annotation(self, annoted):
         annotation = IAnnotations(aq_inner(annoted))
         namespace  = annotation.get(self._namespace, None)
-        if namespace is not None:
+        if namespace is None:
             annotation[self._namespace] = OOBTree()
         return annotation[self._namespace]
 
