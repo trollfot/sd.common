@@ -1,10 +1,9 @@
 """This package adds extensions to portal_catalog.
 """
 from Acquisition import aq_base
-from sd.common.interfaces.providers import IImageContentProvider
 from Products.ATContentTypes.interface.image import IImageContent
 from Products.ATContentTypes.interface.image import IPhotoAlbumAble
-from zope.interface import providedBy
+from sd.common.interfaces.providers import IImageContentProvider
 
 
 def hasImageAndCaption(object, portal, **kw):
@@ -26,7 +25,7 @@ def hasImageAndCaption(object, portal, **kw):
         sub_path = "image"
         thumb_path = "image_"
         image = object.getImage()
-    
+
     if image:
         caption = getattr(object, "getImageCaption", None)
         return {

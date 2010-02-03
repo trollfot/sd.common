@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from Acquisition import aq_parent, aq_inner, aq_base
-from xml.sax import saxutils
 from zope.app.form import browser
 from zope.app.form.browser import widget
 from zope.app.form import interfaces as forminterfaces
@@ -13,7 +11,7 @@ _marker = object()
 
 
 class FileWidgetMixin(object):
-    
+
     @property
     def url(self):
         return '%s/++download++%s' % (
@@ -47,7 +45,7 @@ class FileUploadWidget(FileWidgetMixin, widget.SimpleInputWidget):
     emptyWidget = ViewPageTemplateFile('templates/empty.pt')
 
     def __call__(self):
-        
+
         kwargs = dict(
             name = self.name,
             required = self.context.required,
@@ -60,7 +58,7 @@ class FileUploadWidget(FileWidgetMixin, widget.SimpleInputWidget):
 
         return self.emptyWidget(**kwargs)
 
-           
+
     def _getFormInput(self):
         modify = int(self.request.get('_modify_%s' % self.name, 0))
         if not modify:

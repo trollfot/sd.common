@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from five import grok
-from zope.interface import implements
-from zope.component import adapts
 from zope.app.container.interfaces import IContainer
-from zope.cachedescriptors.property import Lazy, CachedProperty
+from zope.cachedescriptors.property import CachedProperty
 
 from Acquisition import aq_inner
 from AccessControl import getSecurityManager
 
-from plone.memoize.instance import memoize
 from Products.CMFCore.utils import getToolByName
 from Products.ATContentTypes.interface.topic import IATTopic
 from interfaces import IContentQueryHandler
@@ -17,7 +14,7 @@ from interfaces import IContentQueryHandler
 
 class FolderishContentQuery(grok.Adapter):
     grok.context(IContainer)
-    implements(IContentQueryHandler)
+    grok.implements(IContentQueryHandler)
 
     def buildQuery(self, contentFilter):
         if contentFilter.get('path', None) is None:
@@ -43,7 +40,7 @@ class FolderishContentQuery(grok.Adapter):
         """Returns a list of the brains contained in the context.
         """
         show_inactive = show_inactive and self.can_query_inactive
-        query = self.buildQuery(contentFilter)        
+        query = self.buildQuery(contentFilter)
 
         if query is None:
             return []
@@ -53,11 +50,11 @@ class FolderishContentQuery(grok.Adapter):
             return self.catalog(show_inactive = show_inactive, **query)[:limit]
 
         return self.catalog(show_inactive = show_inactive, **query)
-        
+
 
 class TopicContentQuery(FolderishContentQuery):
     grok.context(IATTopic)
-    implements(IContentQueryHandler)
+    grok.implements(IContentQueryHandler)
 
     def buildQuery(self, contentFilter):
         query = self.context.buildQuery()

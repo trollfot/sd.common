@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from five import grok
-from zope.component import adapts
-from zope.interface import implements
-from zope.annotation.interfaces import IAttributeAnnotatable
+from sd.common.adapters.storage.interfaces import IDictStorage, IListStorage
 from sd.common.fields.annotation import AdapterAnnotationProperty
-from sd.common.adapters.base import BaseAdapter
-from interfaces import IDictStorage, IListStorage
+from zope.annotation.interfaces import IAttributeAnnotatable
 
 
 class SimpleAnnotationStorage(grok.Adapter):
@@ -36,7 +33,7 @@ class SimpleAnnotationStorage(grok.Adapter):
             except IndexError:
                 pass
         return False
-            
+
     def delete(self, key):
         storage = self.storage
         length = len(storage)
@@ -48,7 +45,7 @@ class SimpleAnnotationStorage(grok.Adapter):
             self.storage = storage
             return True
         return False
-        
+
     def __getattr__(self, idx):
         return self.retrieve(idx)
 
@@ -81,7 +78,7 @@ class GenericAnnotationStorage(grok.Adapter):
         if item is None:
             return None
         return self.storage[key].__of__(self.context)
-            
+
     def delete(self, key):
         storage = self.storage
         if key not in storage.keys():
@@ -89,6 +86,6 @@ class GenericAnnotationStorage(grok.Adapter):
         del storage[key]
         self.storage = storage
         return True
-        
+
     def __getattr__(self, name):
         return self.retrieve(name)
